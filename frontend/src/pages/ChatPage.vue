@@ -1,28 +1,24 @@
 <template>
-  <div>
-    <h2>Room: {{ roomId }}</h2>
+  <div class="chat-container">
+    <h2>Комната: {{ roomId }}</h2>
 
-    <!-- Список сообщений -->
     <div class="chat-window">
       <div v-for="message in messages" :key="message.id" class="message">
         <strong>{{ message.sender }}:</strong> {{ message.message }}
       </div>
     </div>
 
-    <!-- Форма для отправки сообщений -->
     <form @submit.prevent="sendMessage" class="message-form">
-      <input v-model="messageText" placeholder="Type your message..." />
-      <button type="submit">Send</button>
+      <input v-model="messageText" placeholder="Введите ваше сообщение..." class="form-control" />
+      <button type="submit" class="btn-custom">Отправить</button>
     </form>
 
-    <!-- Кнопка выхода -->
-    <button @click="leaveRoom">Leave Room</button>
+    <button @click="leaveRoom" class="btn-custom">Покинуть комнату</button>
   </div>
 </template>
 
 <script>
 import socket from "../socket"; // Относительный путь к файлу socket.js
-
 
 export default {
   data() {
@@ -71,21 +67,3 @@ export default {
 };
 </script>
 
-<style>
-.chat-window {
-  max-height: 400px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.message {
-  margin-bottom: 5px;
-}
-
-.message-form {
-  display: flex;
-  gap: 5px;
-}
-</style>

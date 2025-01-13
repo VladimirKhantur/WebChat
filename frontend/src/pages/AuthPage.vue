@@ -1,25 +1,66 @@
 <template>
-  <div>
-    <h2>{{ isLoginMode ? 'Login' : 'Register' }}</h2>
+  <div class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="background-color: rgba(212, 212, 212, 1);">
+    <div class="row w-100 justify-content-center">
+      <div class="col-md-8 col-lg-6"> <!-- Увеличен размер колонки -->
+        <div class="card p-4"> <!-- Увеличен внутренний отступ -->
+          <div class="card-header">
+            <h2 class="text-center">{{ isLoginMode ? 'Вход' : 'Регистрация' }}</h2>
+          </div>
+          <div class="card-body">
+            <form @submit.prevent="handleSubmit">
+              
+              <div v-if="!isLoginMode" class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  placeholder="Введите имя пользователя"
+                  v-model="username"
+                />
+              </div>
+              
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Введите email"
+                  v-model="email"
+                />
+              </div>
+              
+              <div class="mb-3">
+                <label for="password" class="form-label">Пароль</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="Введите пароль"
+                  v-model="password"
+                />
+              </div>
+              
+              <button type="submit" class="btn btn-custom w-100">
+                {{ isLoginMode ? 'Войти' : 'Зарегистрироваться' }}
+              </button>
+            </form>
 
-    <!-- Форма для входа/регистрации -->
-    <form @submit.prevent="handleSubmit">
-      <input v-if="!isLoginMode" v-model="username" placeholder="Username" />
-      <input v-model="email" placeholder="Email" />
-      <input v-model="password" type="password" placeholder="Password" />
-      <button type="submit">{{ isLoginMode ? 'Login' : 'Register' }}</button>
-    </form>
+            
+            <p class="text-center mt-3">
+              {{ isLoginMode ? "Нет аккаунта?" : 'Уже есть аккаунт?' }}
+              <button @click="toggleMode" class="btn btn-link">
+                {{ isLoginMode ? 'Зарегистрироваться' : 'Войти' }}
+              </button>
+            </p>
 
-    <!-- Переключатель между входом и регистрацией -->
-    <p>
-      {{ isLoginMode ? "Don't have an account?" : 'Already have an account?' }}
-      <button @click="toggleMode">
-        {{ isLoginMode ? 'Register' : 'Login' }}
-      </button>
-    </p>
-
-    <!-- Отображение ошибок -->
-    <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+           
+            <p v-if="errorMessage" class="text-danger text-center">{{ errorMessage }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,7 +87,7 @@ export default {
     // Обработка отправки формы
     async handleSubmit() {
       if (!this.email || !this.password || (!this.isLoginMode && !this.username)) {
-        this.errorMessage = 'Please fill in all fields.';
+        this.errorMessage = 'Пожалуйста, заполните все поля.';
         return;
       }
 
@@ -63,10 +104,11 @@ export default {
         this.$router.push('/rooms');
       } catch (error) {
         this.errorMessage = this.isLoginMode
-          ? 'Login failed. Please check your credentials.'
-          : 'Registration failed. Please try again.';
+          ? 'Ошибка входа. Проверьте данные.'
+          : 'Ошибка регистрации. Попробуйте снова.';
       }
     },
   },
 };
 </script>
+
