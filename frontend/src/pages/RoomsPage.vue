@@ -16,7 +16,7 @@
     <!-- Кнопка выхода -->
     <button @click="logout">Logout</button>
 
-    <!--Переход в профиль-->
+    <!-- Переход в профиль -->
     <button @click="$router.push('/profile')">Profile</button>
 
     <!-- Сообщение, если комнат нет -->
@@ -28,8 +28,9 @@
       <button type="submit">Add Room</button>
     </form>
 
-    <!-- Ошибки создания комнаты -->
+    <!-- Ошибки -->
     <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+    <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
   </div>
 </template>
 
@@ -37,14 +38,28 @@
 export default {
   data() {
     return {
-      rooms: [
-        { id: 1, name: 'General Chat' }, // Тестовая комната
-      ],          // Список комнат
-      newRoomName: '',    // Название новой комнаты
-      errorMessage: '',   // Сообщения об ошибках
+      rooms: [],           // Список комнат
+      newRoomName: '',     // Название новой комнаты
+      errorMessage: '',    // Сообщения об ошибках
+      successMessage: '',  // Сообщения об успехе
     };
   },
+  async created() {
+    await this.loadRooms(); // Загружаем список комнат при загрузке компонента
+  },
   methods: {
+    // Загрузка списка комнат с сервера
+    async loadRooms() {
+      try {
+        const response = await fetch('http://localhost:3000/api/chat/rooms');
+        if (!response.ok) throw new Error('Failed to load rooms.');
+        const data = await response.json();
+        this.rooms = data;
+      } catch (err) {
+        this.errorMessage = err.message;
+      }
+    },
+
     // Выход из аккаунта
     logout() {
       localStorage.removeItem('token');
@@ -57,16 +72,35 @@ export default {
     },
 
     // Создание новой комнаты
-    createRoom() {
+    async createRoom() {
       if (!this.newRoomName.trim()) {
         this.errorMessage = 'Room name cannot be empty.';
         return;
       }
 
-      const newRoom = { id: this.rooms.length + 1, name: this.newRoomName };
-      this.rooms.push(newRoom); // Добавление новой комнаты в список
-      this.newRoomName = '';    // Очистка поля ввода
-      this.errorMessage = '';   // Сброс ошибок
+      try {
+        const response = await fetch('http://localhost:3000/api/chat/rooms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: this.newRoomName,
+            userId: 1, // Замените на реальный ID пользователя
+          }),
+        });
+
+        if (!response.ok) throw new Error('Failed to create room.');
+        const newRoom = await response.json();
+
+        this.rooms.push(newRoom); // Добавление новой комнаты в список
+        this.newRoomName = '';    // Очистка поля ввода
+        this.successMessage = 'Room created successfully!';
+        this.errorMessage = '';   // Очистка сообщений об ошибке
+      } catch (err) {
+        this.errorMessage = err.message;
+        this.successMessage = ''; // Очистка сообщений об успехе
+      }
     },
   },
 };

@@ -7,6 +7,7 @@ exports.getRooms = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
+    console.log('Request received for /rooms');
 };
 
 exports.createRoom = async (req, res) => {
