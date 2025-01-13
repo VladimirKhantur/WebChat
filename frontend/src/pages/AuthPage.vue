@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="background-color: rgba(212, 212, 212, 1);">
     <div class="row w-100 justify-content-center">
-      <div class="col-md-8 col-lg-6"> <!-- Увеличен размер колонки -->
-        <div class="card p-4"> <!-- Увеличен внутренний отступ -->
+      <div class="col-md-8 col-lg-6"> 
+        <div class="card p-4"> 
           <div class="card-header">
             <h2 class="text-center">{{ isLoginMode ? 'Вход' : 'Регистрация' }}</h2>
           </div>

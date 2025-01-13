@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid vh-100" style="background-color: rgba(212, 212, 212, 1);">
     <div class="row h-100">
-      <!-- Список комнат (левая панель) -->
       <div class="col-3 bg-light p-3">
         <h2 class="mb-4">Комнаты WebChat</h2>
         <ul class="list-group">
@@ -20,7 +19,7 @@
             </button>
           </li>
         </ul>
-        <!-- Кнопка добавления комнаты -->
+
         <button
           class="btn btn-primary mt-3 w-100"
           @click="showAddRoomModal = true"
@@ -29,7 +28,7 @@
         </button>
       </div>
 
-      <!-- Основное содержимое (правая панель) -->
+   
       <div class="col-9 p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h3>Добро пожаловать в WebChat!</h3>
@@ -39,12 +38,11 @@
           </div>
         </div>
 
-        <!-- Сообщение, если комнат нет -->
+      
         <p v-if="rooms.length === 0" class="text-center">No rooms available.</p>
       </div>
     </div>
 
-    <!-- Модальное окно для добавления комнаты -->
     <div v-if="showAddRoomModal" class="modal-backdrop">
       <div class="modal-content">
         <div class="modal-header">
@@ -69,7 +67,7 @@
       </div>
     </div>
 
-    <!-- Ошибки и успешные сообщения -->
+  
     <div v-if="errorMessage" class="alert alert-danger fixed-top m-3">
       {{ errorMessage }}
     </div>
@@ -83,18 +81,18 @@
 export default {
   data() {
     return {
-      rooms: [],           // Список комнат
-      newRoomName: '',     // Название новой комнаты
-      errorMessage: '',    // Сообщения об ошибках
-      successMessage: '',  // Сообщения об успехе
-      showAddRoomModal: false, // Отображение модального окна
+      rooms: [],          
+      newRoomName: '',     
+      errorMessage: '',    
+      successMessage: '', 
+      showAddRoomModal: false, 
     };
   },
   async created() {
-    await this.loadRooms(); // Загружаем список комнат при загрузке компонента
+    await this.loadRooms(); 
   },
   methods: {
-    // Загрузка списка комнат с сервера
+    
     async loadRooms() {
       try {
         const response = await fetch('http://localhost:3000/api/chat/rooms');

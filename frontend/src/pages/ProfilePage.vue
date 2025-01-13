@@ -1,16 +1,15 @@
 <template>
   <div class="profile-container">
     <div class="profile-content">
-      <!-- Аватар пользователя -->
+  
       <div class="avatar-section">
         <div class="avatar">
           <img :src="user.avatarUrl || 'https://img.icons8.com/?size=100&id=23242&format=png&color=000000'" alt="Avatar" />
         </div>
-        <!-- Кнопка выхода -->
+        
         <button @click="logout" class="logout-button">Выйти</button>
       </div>
 
-      <!-- Информация о пользователе -->
       <div class="user-info-section">
         <h2>Профиль</h2>
         <div class="user-info">
