@@ -17,3 +17,16 @@ export const fetchRooms = async () => {
   const response = await httpClient.get('/api/rooms');
   return response.data;
 };
+export const fetchMessages = async (roomId) => {
+  const response = await httpClient.get(`/api/rooms/${roomId}/messages`);
+  return response.data;
+};
+
+export const sendMessageToRoom = async (roomId, text) => {
+  await httpClient.post(`/api/rooms/${roomId}/messages`, { text });
+};
+
+export const createRoom = async (name) => {
+  const response = await httpClient.post('/api/rooms', { name });
+  return response.data; // Вернем данные о новой комнате
+};
