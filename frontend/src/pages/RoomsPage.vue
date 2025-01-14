@@ -130,7 +130,7 @@ export default {
           },
           body: JSON.stringify({
             name: this.newRoomName,
-            userId: 1, // Замените на реальный ID пользователя
+            userId: 1, 
           }),
         });
 

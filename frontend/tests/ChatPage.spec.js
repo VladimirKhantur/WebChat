@@ -25,7 +25,8 @@ describe('ChatPage.vue', () => {
   let newMessageCallback;
 
   beforeEach(async () => {
-    // Мокируем socket.on
+    localStorage.setItem('user', JSON.stringify({ id: 1, username: 'User1' }));
+  
     socket.on.mockImplementation((event, callback) => {
       if (event === 'loadMessages') {
         loadMessagesCallback = callback;
@@ -36,6 +37,7 @@ describe('ChatPage.vue', () => {
     });
 
     await router.push('/chat/123');
+
     wrapper = mount(ChatPage, {
       global: {
         plugins: [router],
@@ -44,16 +46,13 @@ describe('ChatPage.vue', () => {
         },
       },
     });
-
-    // Имитируем загрузку сообщений
+  
     if (loadMessagesCallback) {
       loadMessagesCallback([
-        { id: 1, sender: 'User1', message: 'Привет!' },
-        { id: 2, sender: 'User2', message: 'Как дела?' },
+        { id: 1, sender: 'User1', message: 'Привет!', timestamp: new Date() },
+        { id: 2, sender: 'User2', message: 'Как дела?', timestamp: new Date() },
       ]);
     }
-
-    // Добавляем задержку для обновления DOM
     await wrapper.vm.$nextTick();
   });
 

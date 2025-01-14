@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.62% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/29</span>
+                <span class='fraction'>21/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.11% </span>
+                <span class="strong">55% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/18</span>
+                <span class='fraction'>11/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">30.76% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/12</span>
+                <span class='fraction'>4/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60.71% </span>
+                <span class="strong">61.76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/28</span>
+                <span class='fraction'>21/34</span>
             </div>
         
             
@@ -132,7 +132,19 @@
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,6 +168,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,6 +206,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,8 +231,12 @@
 &nbsp;
     &lt;div class="chat-window"&gt;
       &lt;div v-for="message in messages" :key="message.id" class="message"&gt;
-        &lt;strong&gt;{{ message.sender }}:&lt;/strong&gt; {{ message.message }}
-      &lt;/div&gt;<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+        &lt;p&gt;
+          &lt;strong&gt;{{ message.sender }}&lt;/strong&gt;<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+          &lt;span class="timestamp"&gt;({{ formatTime(message.timestamp) }})&lt;/span&gt;:
+        &lt;/p&gt;
+        &lt;p&gt;{{ message.message }}&lt;/p&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
 &nbsp;
     &lt;form @submit.prevent="sendMessage" class="message-form"&gt;
@@ -221,63 +249,71 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-import socket from "../socket"; // Относительный путь к файлу socket.js
+import socket from "../socket"; // Подключение WebSocket
 &nbsp;
 export default {
   data() {
     return {
       roomId: this.$route.params.roomId, // ID комнаты из URL
-      userId: 1, // Пример ID пользователя, заменить на реальный
-      username: "User1", // Пример имени пользователя, заменить на реальный
-      messages: [], // Сообщения в комнате
+      userId: null, // ID текущего пользователя
+      username: null, // Имя текущего пользователя
+      messages: [], // Список сообщений
       messageText: "", // Текст нового сообщения
     };
   },<span class="fstat-no" title="function not covered" ></span>
   moun<span class="cstat-no" title="statement not covered" >ted() {</span>
-    // Присоединяемся к комнате при загрузке компонента
+    const user = JSON.parse(localStorage.getItem("user")); // Получаем данные пользователя из localStorage
+    this.userId = user.id;
+    this.username = user.username;
+<span class="fstat-no" title="function not covered" ></span>
+    //<span class="cstat-no" title="statement not covered" > Присоединяемся к комнате</span>
     socket.emit("joinRoom", { roomId: this.roomId, username: this.username });
 &nbsp;
-    // Загружаем историю сообщений<span class="fstat-no" title="function not covered" ></span>
-    so<span class="cstat-no" title="statement not covered" >cket.on("loadMessages", (mess</span>ages) =&gt; {
-      this.messages = messages;
+    // Загружаем историю сообщений
+    socket.on("loadMessages", (messages) =&gt; {
+<span class="fstat-no" title="function not covered" ></span>      this.messages = messages;
+    })<span class="cstat-no" title="statement not covered" >;<span class="cstat-no" title="statement not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+    // Получаем новые сообщения
+    socket.on("newMessage", (message) =&gt; {
+      this.messages.push(message);
     });
-&nbsp;
-    // Получаем новые сообщения в реальном времени
-<span class="fstat-no" title="function not covered" >    so</span>cket.on("newMessage", (message) =&gt; {
-<span class="cstat-no" title="statement not covered" >      this.messages.push(message);<span class="cstat-no" title="statement not covered" ></span></span>
-    })<span class="cstat-no" title="statement not covered" >;</span>
-  },
+  },<span class="cstat-no" title="statement not covered" ></span>
   methods: {
     // Отправка сообщения
-    sendMessage() {
-<span class="cstat-no" title="statement not covered" >      if (!this.messageText.t</span>rim()) return;
+<span class="fstat-no" title="function not covered" >    se</span>ndMessage() {
+<span class="cstat-no" title="statement not covered" >      if (!this.messageText.trim()) return;</span>
 &nbsp;
       socket.emit("sendMessage", {
-<span class="fstat-no" title="function not covered" ></span>        roomId: this.roomId,
+        roomId: this.roomId,
 <span class="cstat-no" title="statement not covered" >        userId: this.userId,</span>
         message: this.messageText,
       });
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      this.messageText = ""; // Очи</span>стка поля ввода
-    },
+<span class="fstat-no" title="function not covered" ></span>
+      this.messageT<span class="cstat-no" title="statement not covered" >ext = ""; // Очистка</span> поля ввода
+    },<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
     // Выход из комнаты
     leaveRoom() {
       socket.emit("leaveRoom", { roomId: this.roomId, username: this.username });
-      this.$router.push("/rooms"); // Возврат на страницу списка комнат
+      this.$router.push("/rooms"); // Переход на страницу списка комнат
+    },
+&nbsp;
+    // Форматирование времени
+    formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     },
   },
 };
-&lt;/script&gt;
-&nbsp;
-&nbsp;</pre></td></tr></table></pre>
+&lt;/script&gt;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-14T15:56:01.019Z
+                at 2025-01-14T18:29:51.573Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
