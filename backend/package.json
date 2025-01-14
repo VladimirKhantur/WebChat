@@ -1,8 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "type": "commonjs", 
-
+  "type": "commonjs",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -20,6 +19,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.12.0",
     "socket.io": "^4.8.1"
   }

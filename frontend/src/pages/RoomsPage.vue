@@ -1,9 +1,10 @@
 <template>
-  <div class="container-fluid vh-100" style="background-color: rgba(212, 212, 212, 1);">
+  <div class="container-fluid min-vh-100">
     <div class="row h-100">
-      <div class="col-3 bg-light p-3">
+      <!-- Боковая панель (Список чатов) -->
+      <div class="col-3 bg-light p-3 d-flex flex-column">
         <h2 class="mb-4">Комнаты WebChat</h2>
-        <ul class="list-group">
+        <ul class="list-group flex-grow-1 overflow-auto">
           <li
             v-for="room in rooms"
             :key="room.id"
@@ -28,21 +29,28 @@
         </button>
       </div>
 
-   
-      <div class="col-9 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3>Добро пожаловать в WebChat!</h3>
-          <div>
-            <button @click="logout" class="btn btn-secondary me-2">Logout</button>
-            <button @click="$router.push('/profile')" class="btn btn-info">Profile</button>
+      <!-- Основной контент -->
+      <div class="col-9 p-4 d-flex flex-column">
+        <!-- Фиксированная шапка -->
+        <div class="header-section">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>Добро пожаловать в WebChat!</h3>
+            <div>
+              <button @click="logout" class="btn btn-secondary me-2">Logout</button>
+              <button @click="$router.push('/profile')" class="btn btn-info">Profile</button>
+            </div>
           </div>
         </div>
 
-      
-        <p v-if="rooms.length === 0" class="text-center">No rooms available.</p>
+        <!-- Контент, который может прокручиваться -->
+        <div class="content-section flex-grow-1 overflow-auto">
+          <p v-if="rooms.length === 0" class="text-center">No rooms available.</p>
+          <!-- Здесь может быть основной контент выбранной комнаты -->
+        </div>
       </div>
     </div>
 
+    <!-- Модальное окно для добавления комнаты -->
     <div v-if="showAddRoomModal" class="modal-backdrop">
       <div class="modal-content">
         <div class="modal-header">
@@ -67,7 +75,7 @@
       </div>
     </div>
 
-  
+    <!-- Уведомления об ошибках и успехах -->
     <div v-if="errorMessage" class="alert alert-danger fixed-top m-3">
       {{ errorMessage }}
     </div>
@@ -95,8 +103,13 @@ export default {
     
     async loadRooms() {
       try {
-        const response = await fetch('http://localhost:3000/api/chat/rooms');
-        if (!response.ok) throw new Error('Failed to load rooms.');
+        const response = await fetch('http://localhost:3000/api/chat/rooms', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Добавляем токен
+            'Content-Type': 'application/json',
+          }
+        });
+        if (!response.ok) throw new Error('Не удалось загрузить комнаты.');
         const data = await response.json();
         this.rooms = data;
       } catch (err) {
@@ -107,6 +120,7 @@ export default {
     // Выход из аккаунта
     logout() {
       localStorage.removeItem('token');
+      localStorage.removeItem('user'); // Убираем сохранённые данные пользователя, если они есть
       this.$router.push('/auth');
     },
 
@@ -127,10 +141,11 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Добавляем токен
           },
           body: JSON.stringify({
             name: this.newRoomName,
-            userId: 1, 
+            // userId: 1, // Обычно userId берётся из токена, не из фронтенда
           }),
         });
 
@@ -153,6 +168,10 @@ export default {
       try {
         const response = await fetch(`http://localhost:3000/api/chat/rooms/${roomId}`, {
           method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Добавляем токен
+            'Content-Type': 'application/json',
+          }
         });
 
         if (!response.ok) throw new Error('Не удалось удалить комнату.');
@@ -167,3 +186,107 @@ export default {
 };
 </script>
 
+<style scoped>
+.container-fluid {
+  background-color: rgba(212, 212, 212, 1); /* Серый фон для всей страницы */
+  min-height: 100vh; /* Минимальная высота 100vh, позволяет контейнеру расти */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Поверх других элементов */
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+}
+
+.alert {
+  z-index: 1000;
+}
+
+.avatar-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatar img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.logout-button {
+  padding: 10px 40px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #ff7875;
+}
+
+.chats-button {
+  margin-top: 20px;
+  padding: 10px 40px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chats-button:hover {
+  background-color: #40a9ff;
+}
+
+.user-info-section {
+  margin-top: 20px;
+}
+
+.user-info p {
+  margin: 5px 0;
+}
+
+/* Боковая панель: прокрутка списка комнат */
+.col-3 {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Основной контент: фиксированная шапка и прокручиваемый контент */
+.col-9 {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Контентная секция может прокручиваться, если контента много */
+.content-section {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Стиль для фонового цвета */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgba(212, 212, 212, 1);
+}
+
+
+</style>
