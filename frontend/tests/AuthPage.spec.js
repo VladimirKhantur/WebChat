@@ -2,7 +2,6 @@ import { mount } from '@vue/test-utils';
 import AuthPage from '@/pages/AuthPage.vue';
 import { login, register } from '@/shared/api/httpClient';
 
-// Мокаем API вызовы
 jest.mock('@/shared/api/httpClient', () => ({
   login: jest.fn(),
   register: jest.fn(),
@@ -12,7 +11,7 @@ describe('AuthPage.vue', () => {
   let wrapper;
 
   beforeEach(() => {
-    localStorage.clear(); // Очищаем localStorage перед каждым тестом
+    localStorage.clear(); 
     wrapper = mount(AuthPage);
   });
 
@@ -22,12 +21,12 @@ describe('AuthPage.vue', () => {
 
   it('переключается между режимами входа и регистрации', async () => {
     expect(wrapper.vm.isLoginMode).toBe(true);
-    expect(wrapper.find('h2').text()).toBe('Вход'); // Убедитесь, что текст совпадает
+    expect(wrapper.find('h2').text()).toBe('Вход'); 
 
     await wrapper.find('button.btn-link').trigger('click');
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.isLoginMode).toBe(false);
-    expect(wrapper.find('h2').text()).toBe('Регистрация'); // Убедитесь, что текст совпадает
+    expect(wrapper.find('h2').text()).toBe('Регистрация'); 
   });
 
   it('отображает сообщение об ошибке, если поля не заполнены', async () => {
@@ -91,9 +90,9 @@ describe('AuthPage.vue', () => {
     register.mockRejectedValue(new Error('Ошибка регистрации'));
 
     await wrapper.find('form').trigger('submit');
-    await wrapper.vm.$nextTick(); // Ожидаем обновления DOM
+    await wrapper.vm.$nextTick(); 
 
-    expect(wrapper.find('.text-danger').exists()).toBe(true); // Проверяем, что элемент существует
+    expect(wrapper.find('.text-danger').exists()).toBe(true); 
     expect(wrapper.find('.text-danger').text()).toBe('Ошибка регистрации. Попробуйте снова.');
   });
 });

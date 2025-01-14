@@ -4,6 +4,8 @@ const httpClient = axios.create({
   baseURL: 'http://localhost:3000', 
 });
 
+export { httpClient };
+
 export const login = async (email, password) => {
   const response = await httpClient.post('/api/auth/login', { email, password });
   return response.data.token;

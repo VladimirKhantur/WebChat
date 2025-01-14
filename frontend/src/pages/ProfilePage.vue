@@ -53,7 +53,7 @@ export default {
         'https://img.icons8.com/?size=100&id=xuqvSAsgBfzm&format=png&color=000000',
         'https://img.icons8.com/?size=100&id=NdTzukeLs_pM&format=png&color=000000',
         'https://img.icons8.com/?size=100&id=gi2v1v7IEA_D&format=png&color=000000',
-        'https://img.icons8.com/?size=100&id=UwAh6su01bil&format=png&color=000000', // Пример URL-адресов аватарок
+        'https://img.icons8.com/?size=100&id=UwAh6su01bil&format=png&color=000000', 
         'https://img.icons8.com/?size=100&id=hopN4KhliyoJ&format=png&color=000000',
         'https://img.icons8.com/?size=100&id=VcTCb_viZ8ui&format=png&color=000000',
         'https://img.icons8.com/?size=100&id=Eb_WjSQOlQGi&format=png&color=000000',
