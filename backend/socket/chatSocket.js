@@ -28,10 +28,10 @@ const chatSocket = (io) => {
 
         socket.on('sendMessage', async ({ roomId, userId, message }) => {
             try {
-
+                const [user] = await db.query('SELECT username FROM users WHERE id = ?', [userId]);
                 const [result] = await db.query(
-                    'INSERT INTO messages (room_id, user_id, message) VALUES (?, ?, ?)',
-                    [roomId, userId, message]
+                    'INSERT INTO messages (room_id, user_id, message, sender, timestamp) VALUES (?, ?, ?, ?, NOW())',
+                    [roomId, userId, message,user.username]
                 );
 
                 const savedMessage = {
@@ -39,7 +39,8 @@ const chatSocket = (io) => {
                     roomId,
                     userId,
                     message,
-                    timestamp: new Date(),
+                    sender:user.username,
+                    timestamp: new Date().toISOString(),
                 };
 
                 io.to(roomId).emit('newMessage', savedMessage);

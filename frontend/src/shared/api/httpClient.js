@@ -6,6 +6,8 @@ const httpClient = axios.create({
 
 export const login = async (email, password) => {
   const response = await httpClient.post('/api/auth/login', { email, password });
+  const userData = response.data;
+  localStorage.setItem('user',JSON.stringify(userData));
   return response.data.token;
 };
 

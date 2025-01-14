@@ -94,8 +94,7 @@ export default {
       try {
         if (this.isLoginMode) {
           // Вход
-          const token = await login(this.email, this.password);
-          localStorage.setItem('token', token);
+          await login(this.email, this.password);
         } else {
           // Регистрация
           await register(this.username, this.email, this.password);

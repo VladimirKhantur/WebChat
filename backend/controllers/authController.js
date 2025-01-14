@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Неверный email или пароль' });
         }
 
-        res.status(200).json({ id: user.id, username: user.username, role: user.role });
+        res.status(200).json({ id: user.id, username: user.username, role: user.role,  });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

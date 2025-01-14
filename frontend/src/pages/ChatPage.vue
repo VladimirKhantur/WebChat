@@ -4,7 +4,11 @@
 
     <div class="chat-window">
       <div v-for="message in messages" :key="message.id" class="message">
-        <strong>{{ message.sender }}:</strong> {{ message.message }}
+        <p>
+          <strong>{{ message.sender }}</strong>
+          <span class="timestamp">({{ formatTime(message.timestamp) }})</span>:
+        </p>
+        <p>{{ message.message }}</p>
       </div>
     </div>
 
@@ -18,20 +22,24 @@
 </template>
 
 <script>
-import socket from "../socket"; // Относительный путь к файлу socket.js
+import socket from "../socket"; // Подключение WebSocket
 
 export default {
   data() {
     return {
       roomId: this.$route.params.roomId, // ID комнаты из URL
-      userId: 1, // Пример ID пользователя, заменить на реальный
-      username: "User1", // Пример имени пользователя, заменить на реальный
-      messages: [], // Сообщения в комнате
+      userId: null, // ID текущего пользователя
+      username: null, // Имя текущего пользователя
+      messages: [], // Список сообщений
       messageText: "", // Текст нового сообщения
     };
   },
   mounted() {
-    // Присоединяемся к комнате при загрузке компонента
+    const user = JSON.parse(localStorage.getItem("user")); // Получаем данные пользователя из localStorage
+    this.userId = user.id;
+    this.username = user.username;
+
+    // Присоединяемся к комнате
     socket.emit("joinRoom", { roomId: this.roomId, username: this.username });
 
     // Загружаем историю сообщений
@@ -39,7 +47,7 @@ export default {
       this.messages = messages;
     });
 
-    // Получаем новые сообщения в реальном времени
+    // Получаем новые сообщения
     socket.on("newMessage", (message) => {
       this.messages.push(message);
     });
@@ -61,9 +69,14 @@ export default {
     // Выход из комнаты
     leaveRoom() {
       socket.emit("leaveRoom", { roomId: this.roomId, username: this.username });
-      this.$router.push("/rooms"); // Возврат на страницу списка комнат
+      this.$router.push("/rooms"); // Переход на страницу списка комнат
+    },
+
+    // Форматирование времени
+    formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     },
   },
 };
 </script>
-
