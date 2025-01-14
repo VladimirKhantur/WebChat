@@ -31,16 +31,19 @@ export const createRoom = async (name) => {
   return response.data; // Вернем данные о новой комнате
 };
 
-export const fetchUserData = async () => {
+export async function fetchUserData() {
   try {
-    const response = await httpClient.get('/api/user', {
+    const response = await fetch('http://localhost:3000/api/user', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`, // если используется токен
       },
     });
-    return response.data;
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+    return await response.json();
   } catch (error) {
     console.error('Error fetching user data:', error);
     throw error;
   }
-};
+}

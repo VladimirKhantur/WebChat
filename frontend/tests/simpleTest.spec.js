@@ -1,7 +1,11 @@
-import { expect } from 'chai';
+// Вместо этого:
+// import assert from 'assert';
 
-describe('Simple Test', () => {
-  it('should pass', () => {
-    expect(true).to.be.true;
+// Используйте это:
+const assert = require('assert');
+
+describe('Test Suite', function() {
+  it('should pass a simple test', function() {
+    assert.strictEqual(1, 1);
   });
 });

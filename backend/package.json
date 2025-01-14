@@ -1,6 +1,8 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "type": "module",  // <-- Добавьте эту строку
+
   "main": "index.js",
   "directories": {
     "test": "test"
