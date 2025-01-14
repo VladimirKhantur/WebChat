@@ -1,3 +1,5 @@
+// controllers/chatController.js
+
 const db = require('../config/db');
 
 exports.getRooms = async (req, res) => {
@@ -11,7 +13,12 @@ exports.getRooms = async (req, res) => {
 };
 
 exports.createRoom = async (req, res) => {
-    const { name, userId } = req.body;
+    const { name } = req.body;
+    const userId = req.user.id; // Предполагается, что вы уже настроили аутентификацию и добавили userId в req
+
+    if (!name) {
+        return res.status(400).json({ message: 'Название комнаты не может быть пустым.' });
+    }
 
     try {
         const [result] = await db.query('INSERT INTO rooms (name, created_by) VALUES (?, ?)', [
@@ -20,7 +27,8 @@ exports.createRoom = async (req, res) => {
         ]);
         res.status(201).json({ id: result.insertId, name });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error('Ошибка при создании комнаты:', err);
+        res.status(500).json({ message: 'Не удалось создать комнату.' });
     }
 };
 
