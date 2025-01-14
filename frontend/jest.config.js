@@ -1,16 +1,28 @@
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'vue'],
   transform: {
-    '^.+\\.vue$': 'vue-jest', // Обработка .vue файлов
-    '^.+\\.js$': 'babel-jest', // Обработка JavaScript с помощью Babel
+    '^.+\\.vue$': 'vue-jest',
+    '^.+\\.js$': 'babel-jest',
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1', // Поддержка алиасов
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
-  testEnvironment: 'jsdom', // Для тестирования в браузерной среде
-  testMatch: ['**/tests/**/*.spec.js'], // Где искать тесты
+  testEnvironment: 'jsdom',
+  testMatch: ['**/tests/**/*.spec.js'],
   transformIgnorePatterns: [
-    // Исключение node_modules, кроме тех, которые нужно преобразовывать
     '/node_modules/(?!(axios)/)',
+  ],
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['html', 'text'],
+  reporters: [
+    'default',
+    [
+      'jest-html-reporter',
+      {
+        pageTitle: 'Test Report',
+        outputPath: 'coverage/test-report.html',
+      },
+    ],
   ],
 };

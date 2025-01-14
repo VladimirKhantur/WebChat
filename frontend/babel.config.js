@@ -1,21 +1,21 @@
 module.exports = {
   presets: [
     [
-      '@babel/preset-env', // Пресет для поддержки современного JavaScript
+      '@babel/preset-env', 
       {
         targets: {
-          node: 'current', // Для поддержки текущей версии Node.js
+          node: 'current', 
         },
       },
     ],
-    '@babel/preset-typescript', // Пресет для поддержки TypeScript
+    '@babel/preset-typescript', 
   ],
   plugins: [
     [
-      'module-resolver', // Плагин для поддержки алиасов
+      'module-resolver', 
       {
         alias: {
-          '@': './src', // Алиас для папки src
+          '@': './src', 
         },
       },
     ],
