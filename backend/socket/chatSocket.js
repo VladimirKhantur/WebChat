@@ -24,13 +24,12 @@ const chatSocket = (io) => {
       }
     });
 
-    socket.on('sendMessage', async ({ roomId, userId, message, tempId }) => { // Добавляем tempId
+    socket.on('sendMessage', async ({ roomId, userId, message, tempId }) => {
       try {
         const [rows] = await db.query('SELECT username FROM users WHERE id = ?', [userId]);
-        const user = rows[0]; // Получаем первого пользователя из массива строк
+        const user = rows[0]; 
 
         if (!user) {
-          // Обработка случая, когда пользователь не найден
           console.error(`User with id ${userId} not found.`);
           return;
         }
@@ -43,14 +42,14 @@ const chatSocket = (io) => {
         const savedMessage = {
           id: result.insertId,
           roomId,
-          userId, // Добавляем userId
+          userId, 
           message,
-          sender: user.username, // Убедимся, что поле sender присутствует
+          sender: user.username, 
           timestamp: new Date().toISOString(),
-          tempId, // Добавляем tempId к сообщению
+          tempId,
         };
 
-        console.log('Saved Message:', savedMessage); // Логирование для отладки
+        console.log('Saved Message:', savedMessage); 
 
         io.to(roomId).emit('newMessage', savedMessage);
       } catch (err) {

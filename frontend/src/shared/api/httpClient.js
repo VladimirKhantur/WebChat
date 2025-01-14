@@ -4,10 +4,10 @@ const httpClient = axios.create({
   baseURL: 'http://localhost:3000', 
 });
 
-// Добавляем интерсептор для автоматического добавления токена к каждому запросу
+
 httpClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // Предполагаем, что токен сохраняется под ключом 'token'
+    const token = localStorage.getItem('token'); 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -23,8 +23,8 @@ export { httpClient };
 export const login = async (email, password) => {
   const response = await httpClient.post('/api/auth/login', { email, password });
   const { token, ...userData } = response.data;
-  localStorage.setItem('token', token); // Сохраняем токен
-  localStorage.setItem('user', JSON.stringify(userData)); // Сохраняем данные пользователя, если необходимо
+  localStorage.setItem('token', token); 
+  localStorage.setItem('user', JSON.stringify(userData)); 
   return token;
 };
 
@@ -48,7 +48,7 @@ export const sendMessageToRoom = async (roomId, text) => {
 
 export const createRoom = async (name) => {
   const response = await httpClient.post('/api/rooms', { name });
-  return response.data; // Вернём данные о новой комнате
+  return response.data;
 };
 
 export const fetchUserData = async () => {

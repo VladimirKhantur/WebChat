@@ -1,8 +1,7 @@
 const http = require('http');
 const { Server } = require('socket.io');
 const app = require('./app');
-const chatSocket = require('./socket/chatSocket'); // Убедитесь, что этот файл существует
-
+const chatSocket = require('./socket/chatSocket'); 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 

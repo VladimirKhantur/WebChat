@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { fetchUserData } from '../shared/api/httpClient'; // Импорт функции API
+import { fetchUserData } from '../shared/api/httpClient'; 
 
 export default {
   data() {
@@ -31,7 +31,7 @@ export default {
       user: {
         username: '',
         email: '',
-        createdAt: '', // Добавляем createdAt в объект пользователя (можно удалить, если не используется)
+        createdAt: '', 
       },
       avatars: [
         'https://img.icons8.com/?size=100&id=xuqvSAsgBfzm&format=png&color=000000',
@@ -45,36 +45,32 @@ export default {
         'https://img.icons8.com/?size=100&id=YpfO1uO_dkpP&format=png&color=000000',
         'https://img.icons8.com/?size=100&id=sRKA72rTFhNg&format=png&color=000000',
       ],
-      avatar: '', // Добавляем поле для аватарки
+      avatar: '', 
     };
   },
   async created() {
     try {
-      // Загружаем данные пользователя
       const userData = await fetchUserData();
       this.user = userData;
-      this.avatar = this.getRandomAvatar(); // Выбираем аватар после загрузки данных
+      this.avatar = this.getRandomAvatar(); 
     } catch (error) {
       console.error('Не удалось загрузить данные пользователя:', error);
-      // Перенаправляем на страницу авторизации, если произошла ошибка
       this.$router.push('/auth');
     }
   },
   methods: {
     logout() {
       localStorage.removeItem('token');
-      localStorage.removeItem('user'); // Убираем сохранённые данные пользователя, если они есть
+      localStorage.removeItem('user'); 
       this.$router.push('/auth');
     },
     goToChats() {
-      this.$router.push('/rooms'); // Переход к списку чатов
+      this.$router.push('/rooms'); 
     },
-    // Форматируем дату регистрации (можно удалить, если не используется)
     formatDate(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(date).toLocaleDateString('ru-RU', options);
     },
-    // Метод для случайного выбора аватарки
     getRandomAvatar() {
       const randomIndex = Math.floor(Math.random() * this.avatars.length);
       return this.avatars[randomIndex];

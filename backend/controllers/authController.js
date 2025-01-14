@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key'; // Убедитесь, что у вас есть переменная окружения JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key'; 
 
 // Функция регистрации пользователя
 exports.register = async (req, res) => {
@@ -67,7 +67,6 @@ exports.getUsers = async (req, res) => {
     }
 };
 
-// Middleware проверки роли пользователя
 exports.checkRole = (requiredRole) => async (req, res, next) => {
     const { userId } = req.body;
 

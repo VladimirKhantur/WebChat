@@ -1,4 +1,4 @@
-// src/shared/socket.js
+
 export default {
   emit: jest.fn(),
   on: jest.fn((event, callback) => {

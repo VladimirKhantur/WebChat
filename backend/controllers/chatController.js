@@ -1,4 +1,4 @@
-// controllers/chatController.js
+
 
 const db = require('../config/db');
 
@@ -14,7 +14,7 @@ exports.getRooms = async (req, res) => {
 
 exports.createRoom = async (req, res) => {
     const { name } = req.body;
-    const userId = req.user.id; // Предполагается, что вы уже настроили аутентификацию и добавили userId в req
+    const userId = req.user.id; 
 
     if (!name) {
         return res.status(400).json({ message: 'Название комнаты не может быть пустым.' });

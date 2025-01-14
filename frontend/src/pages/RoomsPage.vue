@@ -29,9 +29,7 @@
         </button>
       </div>
 
-      <!-- Основной контент -->
       <div class="col-9 p-4 d-flex flex-column">
-        <!-- Фиксированная шапка -->
         <div class="header-section">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>Добро пожаловать в WebChat!</h3>
@@ -42,15 +40,12 @@
           </div>
         </div>
 
-        <!-- Контент, который может прокручиваться -->
         <div class="content-section flex-grow-1 overflow-auto">
           <p v-if="rooms.length === 0" class="text-center">No rooms available.</p>
-          <!-- Здесь может быть основной контент выбранной комнаты -->
         </div>
       </div>
     </div>
 
-    <!-- Модальное окно для добавления комнаты -->
     <div v-if="showAddRoomModal" class="modal-backdrop">
       <div class="modal-content">
         <div class="modal-header">
@@ -75,7 +70,6 @@
       </div>
     </div>
 
-    <!-- Уведомления об ошибках и успехах -->
     <div v-if="errorMessage" class="alert alert-danger fixed-top m-3">
       {{ errorMessage }}
     </div>
@@ -105,7 +99,7 @@ export default {
       try {
         const response = await fetch('http://localhost:3000/api/chat/rooms', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Добавляем токен
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, 
             'Content-Type': 'application/json',
           }
         });
@@ -117,19 +111,16 @@ export default {
       }
     },
 
-    // Выход из аккаунта
     logout() {
       localStorage.removeItem('token');
-      localStorage.removeItem('user'); // Убираем сохранённые данные пользователя, если они есть
+      localStorage.removeItem('user'); 
       this.$router.push('/auth');
     },
 
-    // Переход в выбранную комнату
     joinRoom(roomId) {
       this.$router.push(`/room/${roomId}`);
     },
 
-    // Создание новой комнаты
     async createRoom() {
       if (!this.newRoomName.trim()) {
         this.errorMessage = 'Название комнаты не может быть пустым.';
@@ -141,35 +132,33 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Добавляем токен
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, 
           },
           body: JSON.stringify({
             name: this.newRoomName,
-            // userId: 1, // Обычно userId берётся из токена, не из фронтенда
           }),
         });
 
         if (!response.ok) throw new Error('Не удалось создать комнату.');
         const newRoom = await response.json();
 
-        this.rooms.push(newRoom); // Добавление новой комнаты в список
-        this.newRoomName = '';    // Очистка поля ввода
+        this.rooms.push(newRoom); 
+        this.newRoomName = '';
         this.successMessage = 'Комната успешно создана!';
-        this.errorMessage = '';   // Очистка сообщений об ошибке
-        this.showAddRoomModal = false; // Закрытие модального окна
+        this.errorMessage = '';
+        this.showAddRoomModal = false;
       } catch (err) {
         this.errorMessage = err.message;
-        this.successMessage = ''; // Очистка сообщений об успехе
+        this.successMessage = '';
       }
     },
 
-    // Удаление комнаты
     async deleteRoom(roomId) {
       try {
         const response = await fetch(`http://localhost:3000/api/chat/rooms/${roomId}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Добавляем токен
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
           }
         });
@@ -177,7 +166,7 @@ export default {
         if (!response.ok) throw new Error('Не удалось удалить комнату.');
         this.rooms = this.rooms.filter((room) => room.id !== roomId);
         this.successMessage = 'Комната успешно удалена!';
-        this.errorMessage = ''; // Очистка сообщений об ошибке
+        this.errorMessage = '';
       } catch (err) {
         this.errorMessage = err.message;
       }
@@ -188,8 +177,8 @@ export default {
 
 <style scoped>
 .container-fluid {
-  background-color: rgba(212, 212, 212, 1); /* Серый фон для всей страницы */
-  min-height: 100vh; /* Минимальная высота 100vh, позволяет контейнеру расти */
+  background-color: rgba(212, 212, 212, 1); 
+  min-height: 100vh;
 }
 
 .modal-backdrop {
@@ -202,7 +191,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* Поверх других элементов */
+  z-index: 1050;
 }
 
 .modal-content {
@@ -263,25 +252,21 @@ export default {
   margin: 5px 0;
 }
 
-/* Боковая панель: прокрутка списка комнат */
 .col-3 {
   max-height: 100vh;
   overflow-y: auto;
 }
 
-/* Основной контент: фиксированная шапка и прокручиваемый контент */
 .col-9 {
   display: flex;
   flex-direction: column;
 }
 
-/* Контентная секция может прокручиваться, если контента много */
 .content-section {
   flex-grow: 1;
   overflow-y: auto;
 }
 
-/* Стиль для фонового цвета */
 body {
   margin: 0;
   padding: 0;

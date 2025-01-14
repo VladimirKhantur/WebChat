@@ -3,7 +3,6 @@ const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware');
 const db = require('../config/db');
 
-// Маршрут для получения данных текущего пользователя
 router.get('/', authenticateToken, async (req, res) => {
     try {
         const [rows] = await db.query(

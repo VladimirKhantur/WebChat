@@ -14,7 +14,7 @@
         </p>
         <p>{{ message.message }}</p>
       </div>
-      <div ref="messageEnd"></div> <!-- Элемент для прокрутки -->
+      <div ref="messageEnd"></div> 
     </div>
 
     <form @submit.prevent="sendMessage" class="message-form">
@@ -58,7 +58,7 @@ export default {
 
     // Получаем новые сообщения
     socket.on("newMessage", (message) => {
-      console.log("Received newMessage:", message); // Логирование для отладки
+      console.log("Received newMessage:", message); 
       this.messages = this.mergeMessages(this.messages, [message]);
       this.scrollToBottom();
     });
@@ -67,29 +67,27 @@ export default {
     sendMessage() {
       if (!this.messageText.trim()) return;
 
-      const tempId = `temp-${Date.now()}`; // Создаём уникальный tempId
+      const tempId = `temp-${Date.now()}`; 
 
       const localMessage = {
-        id: tempId, // Используем tempId
+        id: tempId, 
         sender: this.username,
         message: this.messageText,
         timestamp: new Date().toISOString(),
-        isTemporary: true, // Помечаем сообщение как временное
-        userId: this.userId, // Добавляем userId для идентификации
+        isTemporary: true, 
+        userId: this.userId, 
       };
 
-      // Локально добавляем сообщение
       this.messages.push(localMessage);
 
-      // Отправляем сообщение на сервер вместе с tempId
       socket.emit("sendMessage", {
         roomId: this.roomId,
         userId: this.userId,
         message: this.messageText,
-        tempId, // Добавляем tempId
+        tempId,
       });
 
-      this.messageText = ""; // Очищаем поле ввода
+      this.messageText = ""; 
     },
 
     leaveRoom() {
@@ -107,18 +105,15 @@ export default {
 
       newMessages.forEach((newMsg) => {
         if (newMsg.tempId) {
-          // Найти индекс временного сообщения по tempId
           const tempIndex = uniqueMessages.findIndex(
             (msg) => msg.id === newMsg.tempId
           );
           if (tempIndex !== -1) {
-            // Заменить временное сообщение на подтверждённое полное сообщение
             uniqueMessages.splice(tempIndex, 1, newMsg);
-            return; // Продолжаем с следующим сообщением
+            return;
           }
         }
 
-        // Проверяем на уникальность по ID
         if (!uniqueMessages.find((msg) => msg.id === newMsg.id)) {
           uniqueMessages.push(newMsg);
         }
@@ -145,12 +140,12 @@ export default {
   padding: 8px;
   margin-bottom: 8px;
   border-radius: 4px;
-  background-color: #f9f9f9; /* Фон для сообщений других пользователей */
+  background-color: #f9f9f9; 
 }
 
 .my-message {
-  background-color: #89c3e04c; /* Светло-красный фон для ваших сообщений */
-  border-left: 4px solid #007bff; /* Красная левая линия */
+  background-color: #89c3e04c; 
+  border-left: 4px solid #007bff; 
 }
 
 .message p {
@@ -165,7 +160,7 @@ export default {
 .btn {
   padding: 8px 16px;
   margin-left: 8px;
-  background-color: #007bff; /* Синий цвет кнопки */
+  background-color: #007bff; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -173,6 +168,6 @@ export default {
 }
 
 .btn:hover {
-  background-color: #0056b3; /* Темно-синий цвет при наведении */
+  background-color: #0056b3; 
 }
 </style>

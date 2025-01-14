@@ -15,7 +15,7 @@ const authenticateToken = (req, res, next) => {
             console.log('Ошибка при проверке токена:', err.message);
             return res.status(403).json({ message: 'Доступ запрещён: неверный токен' });
         }
-        req.user = user; // Добавляем информацию о пользователе в запрос
+        req.user = user; 
         next();
     });
 };
