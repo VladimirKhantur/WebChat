@@ -4,7 +4,7 @@
   
       <div class="avatar-section">
         <div class="avatar">
-          <img :src="user.avatarUrl || 'https://img.icons8.com/?size=100&id=23242&format=png&color=000000'" alt="Avatar" />
+          <img :src="user.avatarUrl || getRandomAvatar()" alt="Avatar" />
         </div>
         
         <button @click="logout" class="logout-button">Выйти</button>
@@ -49,6 +49,18 @@ export default {
         rooms: [],
         createdAt: '', // Добавляем createdAt в объект пользователя
       },
+      avatars: [
+        'https://img.icons8.com/?size=100&id=xuqvSAsgBfzm&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=NdTzukeLs_pM&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=gi2v1v7IEA_D&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=UwAh6su01bil&format=png&color=000000', // Пример URL-адресов аватарок
+        'https://img.icons8.com/?size=100&id=hopN4KhliyoJ&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=VcTCb_viZ8ui&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=Eb_WjSQOlQGi&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=kzn30CdDS3nH&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=YpfO1uO_dkpP&format=png&color=000000',
+        'https://img.icons8.com/?size=100&id=sRKA72rTFhNg&format=png&color=000000',
+      ],
     };
   },
   async created() {
@@ -73,7 +85,11 @@ export default {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(date).toLocaleDateString('ru-RU', options);
     },
+    // Метод для случайного выбора аватарки
+    getRandomAvatar() {
+      const randomIndex = Math.floor(Math.random() * this.avatars.length);
+      return this.avatars[randomIndex];
+    },
   },
 };
 </script>
-
