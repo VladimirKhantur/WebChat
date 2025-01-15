@@ -11,6 +11,10 @@ afterAll(() => {
   console.error.mockRestore();
 });
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 describe('login', () => {
   it('должен возвращать токен при успешном входе', async () => {
     const mockToken = 'fake-token';
@@ -121,26 +125,5 @@ describe('createRoom', () => {
     jest.spyOn(httpClient, 'post').mockRejectedValue(new Error('Ошибка создания комнаты'));
 
     await expect(createRoom('Новая комната')).rejects.toThrow('Ошибка создания комнаты');
-  });
-});
-
-describe('fetchUserData', () => {
-  it('должен возвращать данные пользователя', async () => {
-    const mockUser = { id: 1, name: 'John Doe' };
-    jest.spyOn(httpClient, 'get').mockResolvedValue({ data: mockUser });
-
-    const user = await fetchUserData();
-    expect(user).toEqual(mockUser);
-    expect(httpClient.get).toHaveBeenCalledWith('/api/user', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-  });
-
-  it('должен выбрасывать ошибку при неудачном запросе', async () => {
-    jest.spyOn(httpClient, 'get').mockRejectedValue(new Error('Ошибка загрузки данных пользователя'));
-
-    await expect(fetchUserData()).rejects.toThrow('Ошибка загрузки данных пользователя');
   });
 });

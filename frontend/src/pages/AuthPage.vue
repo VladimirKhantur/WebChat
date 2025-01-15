@@ -93,13 +93,10 @@ export default {
 
       try {
         if (this.isLoginMode) {
-          // Вход
           await login(this.email, this.password);
         } else {
-          // Регистрация
           await register(this.username, this.email, this.password);
         }
-        // Перенаправление на страницу комнат
         this.$router.push('/rooms');
       } catch (error) {
         this.errorMessage = this.isLoginMode
